@@ -1,20 +1,34 @@
 let isUploading = false;
 
 async function downloadFile() {
-    const overlay = document.getElementById('overlay');
+    try {
+        const overlay = document.getElementById('overlay');
 
-    overlay.style.display = 'flex';
-    let id = document.getElementById("fileId")
-    const response = await fetch(`https://brnskl-file.onrender.com/downloadById?fileid=${id.value}`);
-    const data = await response.json();
-    const blob = new Blob([data.content], { type: response.headers.get('content-type') });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    console.log(link.href)
+        overlay.style.display = 'flex';
+        let id = document.getElementById("fileId")
+        const response = await fetch(`https://brnskl-file.onrender.com/downloadById?fileid=${id.value}`);
+        const data = await response.json();
+        if (data.orgname) {
+            const blob = new Blob([data.content], { type: response.headers.get('content-type') });
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            console.log(link.href)
 
-    link.download = `${data.orgname}`;
-    link.click();
-    hideOverlay(); 
+            link.download = `${data.orgname}`;
+            link.click();
+            hideOverlay();
+        }
+        else {
+            hideOverlay();
+
+        }
+
+    } catch (error) {
+        hideOverlay();
+
+    }
+
+
 }
 
 function uploadFile() {
@@ -45,7 +59,7 @@ function uploadFile() {
     })
         .then(response => {
             isUploading = false;
-            hideOverlay(); 
+            hideOverlay();
             if (!response.ok) {
                 alert("Too many requests");
                 throw new Error("network response was not ok");
@@ -59,7 +73,7 @@ function uploadFile() {
         })
         .catch(error => {
             console.error("Error:", error);
-            hideOverlay(); 
+            hideOverlay();
         });
 }
 
