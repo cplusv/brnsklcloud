@@ -1,36 +1,25 @@
 let isUploading = false;
 
-function downloadFile() {
-    var form = document.getElementById("downloadForm");
-    var formData = new FormData(form);
+async function downloadFile() {
+    const overlay = document.getElementById('overlay');
+
+    overlay.style.display = 'flex';
     let id = document.getElementById("fileId")
-    fetch("https://test2-i2dn.onrender.com/downloadById?fileid=" + id.value, {
-        method: "GET"
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-            return response.blob();
-        })
-        .then(blob => {
-            var url = window.URL.createObjectURL(blob);
-            var a = document.createElement("a");
-            a.href = url;
-            a.download = id.value;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-        })
-        .catch(error => {
-            console.error("Error:", error);
-        });
+    const response = await fetch(`https://brnskl-file.onrender.com/downloadById?fileid=${id.value}`);
+    const data = await response.json();
+    const blob = new Blob([data.content], { type: response.headers.get('content-type') });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    console.log(link.href)
+
+    link.download = `${data.orgname}`;
+    link.click();
+    hideOverlay(); 
 }
 
 function uploadFile() {
     if (isUploading) {
-        alert("File is currently being uploaded. Please wait.");
+        alert("file is currently being uploaded. please wait.");
         return;
     }
 
@@ -38,7 +27,7 @@ function uploadFile() {
     const fileSize = fileInput.files[0]?.size;
 
     if (fileSize && fileSize > 500 * 1024 * 1024) {
-        alert("File size exceeds the limit of 500 MB. please choose a smaller file.");
+        alert("file size exceeds the limit of 500 MB. please choose a smaller file.");
         return;
     }
 
@@ -47,13 +36,16 @@ function uploadFile() {
     formData.append('file', fileInput.files[0]);
 
     isUploading = true;
+    const overlay = document.getElementById('overlay');
 
-    fetch("https://test2-i2dn.onrender.com/upload", {
+    overlay.style.display = 'flex';
+    fetch("https://brnskl-file.onrender.com/upload", {
         method: "POST",
         body: formData
     })
         .then(response => {
             isUploading = false;
+            hideOverlay(); 
             if (!response.ok) {
                 alert("Too many requests");
                 throw new Error("network response was not ok");
@@ -67,6 +59,7 @@ function uploadFile() {
         })
         .catch(error => {
             console.error("Error:", error);
+            hideOverlay(); 
         });
 }
 
@@ -75,4 +68,9 @@ function displayFileName() {
     const fileNameDisplay = document.getElementById('fileName');
 
     fileNameDisplay.textContent = `selected file: ${fileInput.files[0].name}`;
+}
+
+
+function hideOverlay() {
+    overlay.style.display = 'none';
 }
