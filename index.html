@@ -22,7 +22,7 @@
             <button id="uploadButton" type="button" onclick="uploadFile()">upload</button>
             <label for="fileInput" class="file-input-label">choose a file</label>
             <button type="button" onclick="downloadFile()">download</button>
-            <input type="file" id="fileInput" onchange="displayFileName()">
+            <input type="file" id="fileInput" onchange="displayFileName()" required>
             <p id="fileName">selected file: none</p>
             <p id="fileid"></p>
         </form>

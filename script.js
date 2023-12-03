@@ -8,19 +8,13 @@ async function downloadFile() {
         let id = document.getElementById("fileId")
         const response = await fetch(`https://brnskl-file.onrender.com/downloadById?fileid=${id.value}`);
         const data = await response.json();
-        if (data.orgname) {
-            const blob = new Blob([data.content], { type: response.headers.get('content-type') });
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            console.log(link.href)
+        if (data.url) {
+            window.open(data.url, '_blank');
 
-            link.download = `${data.orgname}`;
-            link.click();
             hideOverlay();
         }
         else {
             hideOverlay();
-
         }
 
     } catch (error) {
@@ -61,7 +55,6 @@ function uploadFile() {
             isUploading = false;
             hideOverlay();
             if (!response.ok) {
-                alert("Too many requests");
                 throw new Error("network response was not ok");
             }
             return response.json();
