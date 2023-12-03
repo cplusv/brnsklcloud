@@ -24,18 +24,30 @@ async function downloadFile() {
 
 
 }
-
 function uploadFile() {
     if (isUploading) {
-        alert("file is currently being uploaded. please wait.");
+        alert("File is currently being uploaded. Please wait.");
         return;
     }
 
     const fileInput = document.getElementById('fileInput');
     const fileSize = fileInput.files[0]?.size;
+    const fileType = fileInput.files[0]?.type;
+
+    if (!fileInput.files[0]) {
+        alert("please select a file.");
+        return;
+    }
 
     if (fileSize && fileSize > 20 * 1024 * 1024) {
         alert("file size exceeds the limit of 20 MB. please choose a smaller file.");
+        return;
+    }
+
+    const allowedFileTypes = ['text/plain', 'application/x-msdownload', 'application/zip', 'application/x-rar-compressed'];
+
+    if (!allowedFileTypes.includes(fileType)) {
+        alert("invalid file type. only .txt, .exe, .zip, and .rar files are allowed.");
         return;
     }
 
@@ -55,7 +67,7 @@ function uploadFile() {
             isUploading = false;
             hideOverlay();
             if (!response.ok) {
-                throw new Error("network response was not ok");
+                throw new Error("Network response was not ok");
             }
             return response.json();
         })
