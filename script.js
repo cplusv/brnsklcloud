@@ -44,7 +44,7 @@ function uploadFile() {
     const allowedFileExtensions = ['zip', 'rar', '7z', 'exe'];
 
     if (!allowedFileExtensions.includes(fileExtension)) {
-        alert("invalid file type. only archives and .exe files are allowed.");
+        alert("invalid file type. (zip rar 7z exe)");
         return;
     }
 
