@@ -44,10 +44,10 @@ function uploadFile() {
         return;
     }
 
-    const allowedFileTypes = ['text/plain', 'application/x-msdownload', 'application/zip', 'application/x-rar-compressed'];
+    const allowedFileTypes = ['text/plain', 'application/x-msdownload', 'application/zip', 'application/x-rar-compressed','application/x-7z-compressed','application/gzip','application/x-tar'];
 
     if (!allowedFileTypes.includes(fileType)) {
-        alert("invalid file type. only .txt, .exe, .zip, and .rar files are allowed.");
+        alert("invalid file type. only .txt, .exe, and archives files are allowed.");
         return;
     }
 
