@@ -34,8 +34,8 @@ function uploadFile() {
     const fileInput = document.getElementById('fileInput');
     const fileSize = fileInput.files[0]?.size;
 
-    if (fileSize && fileSize > 500 * 1024 * 1024) {
-        alert("file size exceeds the limit of 500 MB. please choose a smaller file.");
+    if (fileSize && fileSize > 20 * 1024 * 1024) {
+        alert("file size exceeds the limit of 20 MB. please choose a smaller file.");
         return;
     }
 
