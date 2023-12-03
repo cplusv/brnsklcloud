@@ -33,16 +33,18 @@ function uploadFile() {
     const fileInput = document.getElementById('fileInput');
     const fileSize = fileInput.files[0]?.size;
     const fileType = fileInput.files[0]?.type;
-
+    const fileName = fileInput.files[0]?.name;
     if (!fileInput.files[0]) {
         alert("Please select a file.");
         return;
     }
 
-    const allowedFileTypes = ['application/zip', 'application/x-rar-compressed', 'application/x-7z-compressed'];
+    const fileExtension = fileName.split('.').pop().toLowerCase();
 
-    if (!fileType || !allowedFileTypes.includes(fileType)) {
-        alert("invalid file type. exe and archives is allowed");
+    const allowedFileExtensions = ['zip', 'rar', '7z', 'exe'];
+
+    if (!allowedFileExtensions.includes(fileExtension)) {
+        alert("invalid file type. only archives and .exe files are allowed.");
         return;
     }
 
