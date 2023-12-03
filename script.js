@@ -35,7 +35,14 @@ function uploadFile() {
     const fileType = fileInput.files[0]?.type;
 
     if (!fileInput.files[0]) {
-        alert("please select a file.");
+        alert("Please select a file.");
+        return;
+    }
+
+    const allowedFileTypes = ['application/zip', 'application/x-rar-compressed', 'application/x-7z-compressed'];
+
+    if (!fileType || !allowedFileTypes.includes(fileType)) {
+        alert("invalid file type. exe and archives is allowed");
         return;
     }
 
@@ -43,7 +50,7 @@ function uploadFile() {
         alert("file size exceeds the limit of 20 MB. please choose a smaller file.");
         return;
     }
-    var form = document.getElementById("uploadForm");
+
     var formData = new FormData();
     formData.append('file', fileInput.files[0]);
 
