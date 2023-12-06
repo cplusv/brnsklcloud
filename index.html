@@ -19,7 +19,7 @@
             <input id="fileId" class="minimalistic-input" type="text" placeholder="file id"
                 style="display: inline-block;">
         </form>
-        <form id="uploadForm">
+        <form id="uploadForm" ondragover="handleDragOver(event)" ondrop="handleDrop(event)">
             <button id="uploadButton" type="button" onclick="uploadFile()">upload</button>
             <label for="fileInput" class="file-input-label">choose a file</label>
             <button type="button" onclick="downloadFile()">download</button>
