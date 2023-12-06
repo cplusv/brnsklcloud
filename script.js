@@ -1,5 +1,11 @@
 let isUploading = false;
 
+document.addEventListener('DOMContentLoaded', function () {
+    const uploadForm = document.getElementById('uploadForm');
+    uploadForm.addEventListener('dragover', handleDragOver);
+    uploadForm.addEventListener('drop', handleDrop);
+});
+
 async function downloadFile() {
     try {
         const overlay = document.getElementById('overlay');
@@ -88,6 +94,23 @@ function displayFileName() {
     const fileNameDisplay = document.getElementById('fileName');
 
     fileNameDisplay.textContent = `selected file: ${fileInput.files[0].name}`;
+}
+
+
+function handleDragOver(event) {
+    event.preventDefault();
+}
+
+function handleDrop(event) {
+    event.preventDefault();
+
+    const files = event.dataTransfer.files;
+
+    if (files.length > 0) {
+        const file = files[0];
+
+        displayFileName(file.name);
+    }
 }
 
 
