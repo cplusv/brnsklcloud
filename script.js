@@ -1,11 +1,34 @@
 let isUploading = false;
+function handleDroppedFile(file) {
+    const fileInput = document.getElementById('fileInput');
+    
+    const fileList = new DataTransfer();
+    fileList.items.add(file);
 
-document.addEventListener('DOMContentLoaded', function () {
-    const uploadForm = document.getElementById('uploadForm');
-    uploadForm.addEventListener('dragover', handleDragOver);
-    uploadForm.addEventListener('drop', handleDrop);
+    fileInput.files = fileList.files;
+
+    displayFileName();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const dropArea = document.getElementById('dropArea');
+
+    dropArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropArea.classList.add('drag-over');
+    });
+
+    dropArea.addEventListener('dragleave', () => {
+        dropArea.classList.remove('drag-over');
+    });
+
+    dropArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropArea.classList.remove('drag-over');
+        const file = e.dataTransfer.files[0];
+        handleDroppedFile(file);
+    });
 });
-
 async function downloadFile() {
     try {
         const overlay = document.getElementById('overlay');
@@ -50,7 +73,7 @@ function uploadFile() {
     const allowedFileExtensions = ['zip', 'rar', '7z', 'exe'];
 
     if (!allowedFileExtensions.includes(fileExtension)) {
-        alert("invalid file type. (zip rar 7z exe)");
+        alert("invalid file type. only archives and .exe files are allowed.");
         return;
     }
 
@@ -94,23 +117,6 @@ function displayFileName() {
     const fileNameDisplay = document.getElementById('fileName');
 
     fileNameDisplay.textContent = `selected file: ${fileInput.files[0].name}`;
-}
-
-
-function handleDragOver(event) {
-    event.preventDefault();
-}
-
-function handleDrop(event) {
-    event.preventDefault();
-
-    const files = event.dataTransfer.files;
-
-    if (files.length > 0) {
-        const file = files[0];
-
-        displayFileName(file.name);
-    }
 }
 
 
