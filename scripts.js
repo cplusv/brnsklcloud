@@ -107,7 +107,7 @@ function uploadFile() {
             fileidel.textContent = `file id: ${data.fileid}`;
         })
         .catch(error => {
-            console.error("Error:", error);
+            alert("rate limited")
             hideOverlay();
         });
 }
