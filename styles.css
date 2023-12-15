@@ -88,11 +88,13 @@ input[type="file"] {
     z-index: 1;
 }
 .snowflake {
-    color: #fff;
-    font-size: 1em;
-    position: absolute;
-    top: -2em;
-  }
+    color: #FFF;
+    font-size: 0.8em;
+    position: fixed; 
+    user-select: none; 
+    pointer-events: none; 
+    z-index: 9999; 
+}
 .lds-ring {
     display: inline-block;
     position: relative;
