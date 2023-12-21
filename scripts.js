@@ -1,7 +1,7 @@
 let isUploading = false;
 function handleDroppedFile(file) {
     const fileInput = document.getElementById('fileInput');
-    
+
     const fileList = new DataTransfer();
     fileList.items.add(file);
 
@@ -35,7 +35,7 @@ async function downloadFile() {
 
         overlay.style.display = 'flex';
         let id = document.getElementById("fileId")
-        const response = await fetch(`https://brnskl-file.onrender.com/downloadById?fileid=${id.value}`);
+        const response = await fetch(`http://localhost:3000/downloadById?fileid=${id.value}`);
         const data = await response.json();
         if (data.url) {
             window.open(data.url, '_blank');
@@ -89,7 +89,7 @@ function uploadFile() {
     const overlay = document.getElementById('overlay');
 
     overlay.style.display = 'flex';
-    fetch("https://brnskl-file.onrender.com/upload", {
+    fetch("http://localhost:3000/upload", {
         method: "POST",
         body: formData
     })
@@ -104,7 +104,9 @@ function uploadFile() {
         .then(data => {
             console.log(data);
             let fileidel = document.getElementById("fileid");
+            let fileurl = document.getElementById("fileurl");
             fileidel.textContent = `file id: ${data.fileid}`;
+            fileurl.textContent = `file url: https://cplusv.github.io/brnsklcloud/${data.fileid}`;
         })
         .catch(error => {
             alert("rate limited")
