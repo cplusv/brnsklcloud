@@ -32,26 +32,35 @@ document.addEventListener('DOMContentLoaded', () => {
 async function downloadFile() {
     try {
         const overlay = document.getElementById('overlay');
-
         overlay.style.display = 'flex';
         let id = document.getElementById("fileId")
         const response = await fetch(`https://brnskl-file.onrender.com/downloadById?fileid=${id.value}`);
-        const data = await response.json();
-        if (data.url) {
-            window.open(data.url, '_blank');
-
-            hideOverlay();
+        let fileNameRes = await fetch(`https://brnskl-file.onrender.com/fileInfo?fileid=${id.value}`)
+        let fileName = await fileNameRes.json()
+        console.log(fileName)
+        if (!response.ok) throw new Error(`Server responded with a non-OK status: ${response.status}`);
+        const contentDispositionHeader = response.headers.get('Content-Disposition');
+        let filename = fileName.name;
+        if (contentDispositionHeader) {
+            const matches = contentDispositionHeader.match(/filename="?([^"]+)"?/);
+            if (matches && matches[1]) {
+                filename = matches[1];
+            }
         }
-        else {
-            hideOverlay();
-        }
 
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        window.URL.revokeObjectURL(url);
+        link.parentNode.removeChild(link);
     } catch (error) {
+    } finally {
         hideOverlay();
-
     }
-
-
 }
 function uploadFile() {
     if (isUploading) {
