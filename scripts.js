@@ -118,7 +118,7 @@ function uploadFile() {
             fileurl.textContent = `file url: https://cplusv.github.io/brnsklcloud/${data.fileid}`;
         })
         .catch(error => {
-            alert("rate limited")
+            alert("rate limited, only 5 files per 15 minutes")
             hideOverlay();
         });
 }
