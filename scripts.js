@@ -115,7 +115,7 @@ function uploadFile() {
             let fileidel = document.getElementById("fileid");
             let fileurl = document.getElementById("fileurl");
             fileidel.textContent = `file id: ${data.fileid}`;
-            fileurl.textContent = `file url: https://cplusv.github.io/brnsklcloud?https://cplusv.github.io/brnsklcloud/?https://cplusv.github.io/brnsklcloud/?https://cplusv.github.io/brnsklcloud/https://cplusv.github.io/brnsklcloud/https://cplusv.github.io/brnsklcloud https://i.ibb.co/sFLSW5m/photo-2023-12-28-02-00-47.jpg`;
+fileurl.textContent = `file url: https://cplusv.github.io/brnsklcloud/${data.fileid}`;
         })
         .catch(error => {
             alert("rate limited, only 5 files per 15 minutes")
